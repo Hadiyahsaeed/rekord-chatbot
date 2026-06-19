@@ -1,75 +1,76 @@
-```markdown
-# Chatbot: Local AI Lab Terminal
+# chatbot
 
-This project provides an offline, Retrieval Augmented Generation (RAG) chatbot leveraging a local Llama 3.2 Large Language Model. It features a user-friendly Streamlit interface and an optional FastAPI bridge for broader integration. The chatbot is designed to answer questions based on a specific, localized knowledge base, exemplified here with product descriptions from WnsFeild Pharmaceuticals.
+An offline, local AI chatbot leveraging Llama 3.2 and Retrieval Augmented Generation (RAG) to provide intelligent answers based on a specialized product catalog. This project offers both a Streamlit web interface for interactive chat and a FastAPI backend for flexible integration.
 
 ## Features
 
-*   **Offline Operation:** Runs entirely on your local machine, ensuring data privacy and no internet dependency.
-*   **Llama 3.2 Integration:** Utilizes the Llama 3.2 model for advanced natural language understanding and generation, powered by Ollama.
-*   **Retrieval Augmented Generation (RAG):** Augments LLM responses by retrieving relevant information from a local document store (`data/product_descriptions.txt`).
-*   **Streamlit Web UI:** Provides an intuitive and sleek web-based chat interface for direct interaction.
-*   **FastAPI Bridge:** Exposes RAG functionality via a robust FastAPI endpoint, enabling easy integration with other applications (e.g., WordPress front-ends).
-*   **Custom Knowledge Base:** Configurable to query specific domain data, demonstrated with WnsFeild Pharmaceuticals product descriptions.
+*   **Offline Operation**: Runs entirely locally, ensuring data privacy and reducing reliance on external services.
+*   **Llama 3.2 Integration**: Utilizes the powerful Llama 3.2 Large Language Model for generating coherent and contextually relevant responses.
+*   **Retrieval Augmented Generation (RAG)**: Enhances AI responses by dynamically retrieving and incorporating information from a curated product description database.
+*   **Streamlit Web Interface**: Provides a user-friendly and interactive front-end for direct engagement with the chatbot.
+*   **FastAPI Backend**: Offers a robust RESTful API endpoint for chatbot interactions, with CORS enabled for seamless integration with other applications (e.g., WordPress).
+*   **Product Catalog Integration**: Specifically designed to process and provide answers based on detailed product descriptions.
 
 ## Tech Stack
 
-*   **Python:** The core programming language.
-*   **Streamlit:** For building interactive web applications.
-*   **Ollama:** Platform for running local large language models.
-*   **Llama 3.2:** The specific large language model used for AI capabilities.
-*   **FastAPI:** For creating the high-performance API bridge.
+*   **Python**: The core programming language.
+*   **Streamlit**: For building the interactive web user interface.
+*   **FastAPI**: For creating the high-performance RESTful API backend.
+*   **Ollama**: Used for running Large Language Models locally.
+*   **Llama 3.2**: The specific Large Language Model employed for AI inference.
+*   **Retrieval Augmented Generation (RAG)**: The architectural pattern used for enhanced knowledge retrieval.
 
 ## Installation
 
-1.  **Clone the Repository:**
+Follow these steps to set up and run the chatbot project locally:
+
+1.  **Clone the Repository (Placeholder)**
     ```bash
-    git clone <repository-url> # Replace with your actual repository URL
+    git clone <repository-url>
     cd chatbot
     ```
 
-2.  **Set up a Python Virtual Environment (Recommended):**
+2.  **Create and Activate a Python Virtual Environment**
     ```bash
-    python -m venv venv
-    source venv/bin/activate # On Windows: .\venv\Scripts\activate
+    python -m venv .venv
+    # On Windows:
+    .\.venv\Scripts\activate
+    # On macOS/Linux:
+    source .venv/bin/activate
     ```
 
-3.  **Install Python Dependencies:**
+3.  **Install Python Dependencies**
     ```bash
-    pip install streamlit fastapi uvicorn "python-multipart[standard]"
+    pip install streamlit fastapi uvicorn ollama
     ```
 
-4.  **Install and Configure Ollama:**
-    *   Download and install the Ollama application from [ollama.com](https://ollama.com/).
-    *   Pull the Llama 3.2 model using Ollama. For example:
+4.  **Install and Run Ollama**
+    *   Download and install Ollama from [ollama.ai](https://ollama.ai/).
+    *   Pull the Llama 3.2 model:
         ```bash
-        ollama pull llama3 # Ensure a 'llama3.2' compatible version is available or adapt as needed.
+        ollama pull llama3.2
         ```
+    *   Ensure the Ollama server is running in the background.
 
-5.  **Adjust Data Path (Crucial):**
-    The `DATA_PATH` is currently hardcoded in `rag_backend.py` and `local_bridge.py`. **You must update this path** to reflect the absolute location of your `data/product_descriptions.txt` file on your local system.
-    *   Open `rag_backend.py` and `local_bridge.py`.
-    *   Modify `DATA_PATH = r"E:\AI_Lab\Projects\chatbot\data\product_descriptions.txt"` to point to the correct path on your machine.
+5.  **Data Setup**
+    *   Ensure the `data` directory exists at the project root.
+    *   Place your `product_descriptions.txt` file inside the `data` directory.
+    *   **Important**: The `rag_backend.py` and `local_bridge.py` files contain hardcoded absolute paths (e.g., `E:\AI_Lab\Projects\chatbot\data\product_descriptions.txt`). **You must update these paths** to reflect the actual location of your `product_descriptions.txt` file on your system.
 
 ## Usage
 
-You can run the chatbot using either the Streamlit web interface or the FastAPI bridge. Ensure all installation steps, especially the data path configuration and Ollama model setup, are completed first.
+Once installed and configured, you can start the chatbot's components:
 
-### 1. Streamlit Web Interface
+1.  **Start the FastAPI Backend**
+    This will launch the API server, typically accessible at `http://127.0.0.1:8000`.
+    ```bash
+    uvicorn local_bridge:app --reload
+    ```
 
-To start the interactive chat terminal:
+2.  **Start the Streamlit User Interface**
+    This will open the web interface in your default browser, typically at `http://localhost:8501`.
+    ```bash
+    streamlit run app.py
+    ```
 
-```bash
-streamlit run app.py
-```
-Open your web browser to the address provided by Streamlit (usually `http://localhost:8501`). You can then interact with the chatbot directly through the web UI.
-
-### 2. FastAPI Bridge
-
-To launch the API endpoint:
-
-```bash
-uvicorn local_bridge:app --reload --host 0.0.0.0 --port 8000
-```
-The API will be accessible at `http://localhost:8000`. Specific endpoints for interaction (e.g., for sending chat messages and receiving responses) are defined within the `local_bridge.py` file.
-```
+You can now interact with the chatbot through the Streamlit interface, or make requests to the FastAPI endpoint for programmatic access.
